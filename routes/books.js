@@ -1,9 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
+/* GET books listing. */
 router.get('/', (req, res) => {
-  res.json({books: [{title: 'The Bible'}]});
+  const booksCollection = [
+    { title: 'The Bible' },
+    { title: 'The Quran' }
+  ]
+  res.json({ books: booksCollection });
 });
 
 module.exports = router;
