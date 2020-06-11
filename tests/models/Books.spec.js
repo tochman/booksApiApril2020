@@ -7,6 +7,8 @@ const {
 } = require('sequelize-test-helpers')
 
 const Book = require('../../models/book')
+const Author = require('../../models/author')
+
 const { factory, expect } = require('../test_helper')
 
 describe('Book', () => {
@@ -46,6 +48,18 @@ describe('Book', () => {
           .to.include({ message: 'Validation error: You need to set a title!' })
       }
     });
+  });
+
+  describe('associations', () => {
+    before(() => {
+      DescribedModel.associate({ Author })
+    });
+
+    it('defines a belongsTo association with Author', () => {
+      expect(DescribedModel.belongsTo)
+        .to.have.been.calledWith(Author)
+    });
+
   });
 
 });

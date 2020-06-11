@@ -3,5 +3,6 @@ module.exports = (factory, Models) => {
     title: 'FooBar',
     createdAt: new Date(),
     updatedAt: new Date(),
+    authorId: factory.assoc('Author', 'id')
   })
 }

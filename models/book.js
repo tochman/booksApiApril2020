@@ -5,12 +5,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: {  msg: 'You need to set a title!' }
+        notEmpty: { msg: 'You need to set a title!' }
       }
     }
   }, {});
-  Book.associate = function (models) {
+  Book.associate = (models) => {
     // associations can be defined here
+    Book.belongsTo(models.Author, { foreignKey: 'authorId', as: 'author' })
   };
   return Book;
 };
