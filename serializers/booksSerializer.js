@@ -7,7 +7,7 @@ const booksSerializer = {
         {
           model: models.Author,
           as: 'author',
-          attributes: { exclude: ['createdAt', 'updatedAt']}
+          attributes: { exclude: ['id','createdAt', 'updatedAt']}
         }
       ],
       attributes: ['id', 'title'],
