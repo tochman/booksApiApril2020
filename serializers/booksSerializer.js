@@ -16,6 +16,3 @@ const booksSerializer = {
 }
 
 module.exports = booksSerializer
-const foo = "bar";
-
-let me = "be"
