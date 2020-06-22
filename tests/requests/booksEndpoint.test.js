@@ -34,6 +34,7 @@ describe('GET /api/v1/books', () => {
   describe('for non authenticated user', () => {
     beforeEach(async () => {
       response = await request.get('/api/v1/books')
+
     })
     it('should respond with 401', () => {
       expect(response.status).to.equal(401)
@@ -46,7 +47,10 @@ describe('GET /api/v1/books', () => {
         .post('/api/v1/auth/login')
         .send({ email: 'user@random.com', password: 'password' })
         .then((response) => {
-          token = response.body.token
+          token = response.body.token // save the token for future use in the test
+        })
+        .catch((error) => {
+          console.log(error)
         })
 
       response = await request.get('/api/v1/books').set('Authorization', token)
