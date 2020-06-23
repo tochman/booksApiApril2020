@@ -41,7 +41,7 @@ describe('GET /api/v1/books', () => {
     });
   });
 
-  describe.only('for authenticated user', () => {
+  describe('for authenticated user', () => {
     beforeEach(async () => {
       await request
         .post('/api/v1/auth/login')

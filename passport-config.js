@@ -11,18 +11,22 @@ module.exports = (passport) => {
     new Strategy(options, async (payload, done) => {
 
       await models.Author.findOne({ where: { email: payload.email } })
-        .then(user => {
-          //success, user is found
-          return done(null, {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          })
+        .then(async user => {
+          //success, user is found but let's check the password
+          if ( user.validatePassword(payload.password) ) {
+            return done(null, {
+              id: user.id,
+              name: user.name,
+              email: user.email
+            })
+          } else {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
         })
         .catch(error => {
           // failure, user is NOT found
           console.error(error)
-          return done(null, false)
+          return done(null, false, { message: 'Wrong username or email' })
         })
     })
   )
