@@ -11,7 +11,7 @@ module.exports = (passport) => {
     new Strategy(options, async (payload, done) => {
 
       await models.Author.findOne({ where: { email: payload.email } })
-        .then(async user => {
+        .then( user => {
           //success, user is found but let's check the password
           if ( user.validatePassword(payload.password) ) {
             return done(null, {

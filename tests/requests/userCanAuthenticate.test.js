@@ -59,7 +59,6 @@ describe('GET /api/v1/auth', () => {
     it('should respond with 401', () => {
       expect(response.status).to.equal(401)
     });
-
   });
 
 });
