@@ -16,7 +16,7 @@ after(done => {
 
 beforeEach(async () => {
   const author = await factory.create('Author',
-    { id: 100, name: 'Gabriel', email: 'gabriel@heaven.org', password: 'password' }
+    { id: 101, name: 'Gabriel', email: 'gabriel@heaven.org', password: 'password' }
   )
   await factory.createMany('Book', 2, [
     { id: 1, title: 'The Bible', authorId: author.id },
