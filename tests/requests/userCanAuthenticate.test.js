@@ -4,24 +4,27 @@ const { factory, expect } = require('../test_helper')
 
 let server, request, response
 
-before(done => {
+before((done) => {
   server = app.listen(done)
   request = supertest.agent(server)
-});
+})
 
-after(done => {
+after((done) => {
   server.close(done)
-});
+})
 
 beforeEach(async () => {
-  const author = await factory.create('Author',
-    { id: 100, name: 'Gabriel', email: 'gabriel@heaven.org', password: 'password' }
-  )
-});
+  const author = await factory.create('Author', {
+    id: 100,
+    name: 'Gabriel',
+    email: 'gabriel@heaven.org',
+    password: 'password',
+  })
+})
 
 afterEach(async () => {
   await factory.cleanUp()
-});
+})
 
 describe('GET /api/v1/auth', () => {
   describe('with valid credentials', () => {
@@ -32,21 +35,19 @@ describe('GET /api/v1/auth', () => {
         .then((res) => {
           response = res // let's save the response for assertions
         })
-
     })
     it('should respond with 200', () => {
-      expect(response.status)
-        .to.equal(200)
-    });
+      expect(response.status).to.equal(200)
+    })
 
     it('should return a token', () => {
       expect(response.body)
         .to.be.an.instanceof(Object)
         .and.to.have.property('token')
-    });
-  });
+    })
+  })
 
-  describe('with invalid credentials', () => {
+  describe('with invalid credentials - bad password', () => {
     beforeEach(async () => {
       await request
         .post('/api/v1/auth/login')
@@ -54,11 +55,37 @@ describe('GET /api/v1/auth', () => {
         .then((res) => {
           response = res // let's save the response for assertions
         })
-
     })
     it('should respond with 401', () => {
       expect(response.status).to.equal(401)
-    });
-  });
-
-});
+      expect(response.text).to.equal('Wrong Password')
+    })
+  })
+  describe('with invalid credentials - wrong user', () => {
+    beforeEach(async () => {
+      await request
+        .post('/api/v1/auth/login')
+        .send({ email: 'gabriel123@heaven.org', password: 'wrong-password' })
+        .then((res) => {
+          response = res // let's save the response for assertions
+        })
+    })
+    it('should respond with 401', () => {
+      expect(response.status).to.equal(401)
+      expect(response.text).to.equal('No User found')
+    })
+  })
+  describe('with no credentials', () => {
+    beforeEach(async () => {
+      await request
+        .post('/api/v1/auth/login')
+        .then((res) => {
+          response = res
+        })
+    })
+    it('should respond with 401', () => {
+      expect(response.status).to.equal(401)
+      expect(response.text).to.equal('No authentication information found')
+    })
+  })
+})
