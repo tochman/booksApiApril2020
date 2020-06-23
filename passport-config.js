@@ -13,7 +13,8 @@ module.exports = (passport) => {
       await models.Author.findOne({ where: { email: payload.email } })
         .then(async user => {
           //success, user is found but let's check the password
-          if ( user.validatePassword(payload.password) ) {
+          const isValid = await user.validatePassword(payload.password)
+          if ( isValid ) {
             return done(null, {
               id: user.id,
               name: user.name,

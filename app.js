@@ -19,6 +19,6 @@ app.use(passport.initialize())
 require('./passport-config')(passport)
 
 app.use('/api/v1/books', passport.authenticate('jwt', { session: false }), books);
-app.use('/api/v1/auth', authentication)
+app.use('/api/v1/auth', passport.authenticate('jwt', { session: false }),authentication)
 
 module.exports = app;
