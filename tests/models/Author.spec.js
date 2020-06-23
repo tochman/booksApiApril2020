@@ -16,5 +16,7 @@ describe('Author', () => {
 
   checkModelName(DescribedModel)('Author')
   checkPropertyExists(subject)('name')
+  checkPropertyExists(subject)('email')
+  checkPropertyExists(subject)('password')
 
 });

@@ -16,7 +16,7 @@ after(done => {
 
 beforeEach(async () => {
   const author = await factory.create('Author',
-    { id: 100, name: 'Gabriel' }
+    { id: 100, name: 'Gabriel', email: 'gabriel@heaven.org', password: 'password' }
   )
   await factory.createMany('Book', 2, [
     { id: 1, title: 'The Bible', authorId: author.id },
@@ -45,7 +45,7 @@ describe('GET /api/v1/books', () => {
     beforeEach(async () => {
       await request
         .post('/api/v1/auth/login')
-        .send({ email: 'user@random.com', password: 'password' })
+        .send({ email: 'gabriel@heaven.org', password: 'password' })
         .then((response) => {
           token = response.body.token // save the token for future use in the test
         })
@@ -63,8 +63,8 @@ describe('GET /api/v1/books', () => {
       const expectedBody = {
         books:
           [
-            { id: 1, title: 'The Bible', author: { name: "Gabriel" } },
-            { id: 2, title: 'The Quran', author: { name: "Gabriel" } }
+            { id: 1, title: 'The Bible', author: { name: "Gabriel", email: 'gabriel@heaven.org' } },
+            { id: 2, title: 'The Quran', author: { name: "Gabriel", email: 'gabriel@heaven.org' } }
           ]
       }
       expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody))
